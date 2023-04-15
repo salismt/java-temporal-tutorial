@@ -25,6 +25,10 @@ public class WorkflowOrchestratorImpl implements WorkflowOrchestrator {
                         .setWorkflowId(applicationProperties.getWorkflowId() + "-" + UUID.randomUUID())
                         .setTaskQueue(TaskQueue.ORDER_FULFILLMENT_WORKFLOW_TASK_QUEUE.name())
                         .build());
-        WorkflowClient.start(orderFulfillmentWorkflow::createOrder, input);
+
+        // Execute Sync
+        orderFulfillmentWorkflow.createOrder(input);
+        // Async execution
+//        WorkflowClient.start(orderFulfillmentWorkflow::createOrder, input);
     }
 }
