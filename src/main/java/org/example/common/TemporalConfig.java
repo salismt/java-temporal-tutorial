@@ -3,13 +3,14 @@ package org.example.common;
 import io.temporal.client.WorkflowClient;
 import io.temporal.serviceclient.WorkflowServiceStubs;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-@Component
-public class CommonWorkflowClient {
+@Configuration
+public class TemporalConfig {
 
     @Bean
-    public static WorkflowClient buildWorkflowClient() {
+    public WorkflowClient workflowClient() {
         WorkflowServiceStubs service = WorkflowServiceStubs.newLocalServiceStubs();
         return WorkflowClient.newInstance(service);
     }
