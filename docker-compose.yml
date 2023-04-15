@@ -1,0 +1,18 @@
+version: "3.5"
+services:
+  order-postgresql:
+    container_name: order-postgresql
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    image: postgres:13
+    networks:
+      - order-network
+    ports:
+      - 5433:5432
+    volumes:
+      - /var/lib/postgresql/data
+networks:
+  order-network:
+    driver: bridge
+    name: order-network

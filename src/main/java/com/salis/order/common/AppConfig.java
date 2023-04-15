@@ -9,6 +9,9 @@ import com.salis.order.order.command.OrderCommand;
 import com.salis.order.order.command.OrderCommandImpl;
 import com.salis.order.order.factory.OrderFactory;
 import com.salis.order.order.factory.OrderFactoryImpl;
+import com.salis.order.persistance.OrderRepository;
+import com.salis.order.persistance.OrderRepositoryImpl;
+import com.salis.order.persistance.jpa.OrderJpaRepository;
 import lombok.Setter;
 import com.salis.order.infrastructure.temporal.orchestrator.WorkflowOrchestratorClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,23 +23,28 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 
     @Bean
-    public OrderFactory orderFactory() {
-        return new OrderFactoryImpl(orderCommand());
+    public OrderRepository orderRepository(OrderJpaRepository orderJpaRepository) {
+        return new OrderRepositoryImpl(orderJpaRepository);
     }
 
     @Bean
-    public OrderCommand orderCommand() {
-        return new OrderCommandImpl(workflowOrchestrator());
+    public OrderFactory orderFactory(OrderRepository orderRepository) {
+        return new OrderFactoryImpl(orderCommand(orderRepository));
     }
 
     @Bean
-    public OrderWorker orderWorker() {
-        return new OrderWorker(createPendingOrderActivity(), workflowOrchestratorClient());
+    public OrderCommand orderCommand(OrderRepository orderRepository) {
+        return new OrderCommandImpl(orderRepository, workflowOrchestrator());
     }
 
     @Bean
-    public CompleteOrderActivity createPendingOrderActivity() {
-        return new CompleteOrderActivityImpl();
+    public OrderWorker orderWorker(OrderRepository orderRepository) {
+        return new OrderWorker(createPendingOrderActivity(orderRepository), workflowOrchestratorClient());
+    }
+
+    @Bean
+    public CompleteOrderActivity createPendingOrderActivity(OrderRepository orderRepository) {
+        return new CompleteOrderActivityImpl(orderRepository);
     }
 
     @Bean

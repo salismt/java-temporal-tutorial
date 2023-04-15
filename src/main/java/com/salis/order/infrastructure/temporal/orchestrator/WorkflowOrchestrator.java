@@ -1,7 +1,9 @@
 package com.salis.order.infrastructure.temporal.orchestrator;
 
+import com.salis.order.domain.model.Order;
+
 public interface WorkflowOrchestrator {
 
-    void createOrder(String input);
+    void createOrder(Order order);
 
 }

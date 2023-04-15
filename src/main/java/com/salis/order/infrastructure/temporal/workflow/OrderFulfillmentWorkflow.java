@@ -1,5 +1,6 @@
 package com.salis.order.infrastructure.temporal.workflow;
 
+import com.salis.order.domain.model.Order;
 import io.temporal.workflow.WorkflowInterface;
 import io.temporal.workflow.WorkflowMethod;
 
@@ -7,5 +8,5 @@ import io.temporal.workflow.WorkflowMethod;
 public interface OrderFulfillmentWorkflow {
 
     @WorkflowMethod
-    void createOrder(String input);
+    void createOrder(Order order);
 }

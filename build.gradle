@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.10'
+    id "org.flywaydb.flyway" version "9.8.1"
 }
 
 group 'org.example'
@@ -12,9 +13,16 @@ repositories {
 
 dependencies {
     var springBootVersion = '2.7.10'
+    var mapstructVersion = '1.5.4.Final'
 
     implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
     implementation 'io.temporal:temporal-sdk:1.17.0'
+
+    implementation 'org.postgresql:postgresql:42.6.0'
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
@@ -27,4 +35,10 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+flyway {
+    url = "jdbc:postgresql://localhost:5433/orders"
+    user = "postgres"
+    password = "postgres"
 }

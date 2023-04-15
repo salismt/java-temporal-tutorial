@@ -1,5 +1,6 @@
 package com.salis.order.infrastructure.temporal.workflow.impl;
 
+import com.salis.order.domain.model.Order;
 import com.salis.order.infrastructure.temporal.activity.CompleteOrderActivity;
 import io.temporal.activity.LocalActivityOptions;
 import io.temporal.common.RetryOptions;
@@ -20,9 +21,9 @@ public class OrderFulfillmentWorkflowImpl implements OrderFulfillmentWorkflow {
             Workflow.newLocalActivityStub(CompleteOrderActivity.class, localActivityOptions);
 
     @Override
-    public void createOrder(String input) {
+    public void createOrder(Order order) {
 
-        System.out.println("Completing Order: " + input);
-        orderActivity.completeOrder(input);
+        System.out.println("Completing Order: " + order.getReferenceId());
+        orderActivity.completeOrder(order);
     }
 }
